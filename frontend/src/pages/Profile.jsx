@@ -1,30 +1,35 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Container, Card, Row, Col, Spinner } from 'react-bootstrap';
 
 const Profile = () => {
-    const { user, logout } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
+    const { user } = useContext(AuthContext);
 
     return (
-        <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto', textAlign: 'center' }}>
-            <h2>Protected Profile Area</h2>
-            {user ? (
-                <div style={{ marginTop: '20px', padding: '20px', border: '1px solid #ccc' }}>
-                    <p><strong>Welcome!</strong></p>
-                    <p>Your authenticated email is: {user.email}</p>
-                    <p>Your Database ID is: {user.id}</p>
-                </div>
-            ) : (
-                <p>Loading user data...</p>
-            )}
-            <button onClick={handleLogout} style={{ marginTop: '20px' }}>Logout</button>
-        </div>
+        <Container>
+            <Row className="justify-content-md-center mt-5">
+                <Col xs={12} md={8}>
+                    <Card className="shadow-sm text-center">
+                        <Card.Header as="h4" className="bg-primary text-white">Dashboard</Card.Header>
+                        <Card.Body className="py-5">
+                            {user ? (
+                                <>
+                                    <Card.Title className="mb-4">Welcome back!</Card.Title>
+                                    <Card.Text className="text-muted mb-2">
+                                        <strong>Email:</strong> {user.email}
+                                    </Card.Text>
+                                    <Card.Text className="text-muted">
+                                        <strong>Account ID:</strong> #{user.id}
+                                    </Card.Text>
+                                </>
+                            ) : (
+                                <Spinner animation="border" variant="primary" />
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
